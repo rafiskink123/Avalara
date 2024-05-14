@@ -13,7 +13,7 @@ Clone the repository to your local machine:
 
 bash
 Copy code
-git clone https://github.com/your-username/date-range-overlap-api.git
+git clone https://github.com/rafiskink123/Avalara.git
 Navigate to the project directory:
 
 bash
