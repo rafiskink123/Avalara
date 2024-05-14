@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    // Install required dependencies (Flask)
+                    sh 'pip install Flask'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    // Run unit tests or integration tests
+                    sh 'python -m unittest discover tests'
+                }
+            }
+        }
+
+        stage('Package') {
+            steps {
+                script {
+                    // Create a runtime artifact (e.g., Docker image or ZIP file)
+                    sh 'docker build -t my-python-app .'
+                    sh 'docker save -o my-python-app.tar my-python-app'
+                }
+            }
+            post {
+                success {
+                    // Archive the artifact for future deployment or distribution
+                    archiveArtifacts artifacts: 'my-python-app.tar', fingerprint: true
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up workspace and Docker images
+            cleanWs()
+            sh 'docker rmi my-python-app'
+        }
+    }
+}
